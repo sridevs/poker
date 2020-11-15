@@ -22,5 +22,11 @@ python winning_hand.py 'As Ah Ac Jd Qs' '8s 8h Qc Ad As' 'Js Jh Jc 2d 2s'
 #returns The winning hand is --> (Spade J, Heart J, Club J, Diamond 2, Spade 2)
 ```
 
+## Test
+
+```bash
+python -m unittest #runs all test
+```
+
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
