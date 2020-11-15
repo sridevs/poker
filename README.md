@@ -9,6 +9,7 @@ Ex. AS = Ace Spade, 10c = 10 club, qd = Queen diamond
 A hand is passed as set of cards in string separated by spaces
 
 ```shell
+cd winning_hand
 python winning_hand.py 'As Ah 8c Jd Qs' 'Js 8h Qc Kd Ks' 
 #returns The winning hand is --> (Spade A, Heart A, Club 8, Diamond J, Spade Q)
 
