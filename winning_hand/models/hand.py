@@ -1,4 +1,4 @@
-from models.check_rank import is_straight, is_wheel, is_flush, has_two_pair, is_full_house
+from models.check_rank import *
 from models.rank_value import RankValue
 
 
@@ -16,24 +16,24 @@ class Hand:
     def __gt__(self, other):
         return isinstance(other, Hand) and self.value() > other.value()
 
-    @staticmethod
-    def update_pair_count_and_hand_value(hand_value, pair_counts):
+    def _hand_stats(self):
+        hand_value, hand_suite, pair_counts = [], [], []
+        for card in self.cards:
+            hand_value.append(card.value())
+            hand_suite.append(card.suite())
+
         pair_value = []
         for card_value in set(hand_value):
             pair_count = hand_value.count(card_value) / 2
             if pair_count >= 1:
                 pair_counts.append(pair_count)
                 pair_value.insert(0, RankValue.pair_multiplier ** pair_count * card_value)
-        hand_value.extend(pair_value)
-        hand_value.sort(reverse=True)
+
+        return sorted(hand_value + pair_value, reverse=True), hand_suite, pair_counts
 
     def value(self):
-        hand_value, hand_suite, pair_counts = [], [], []
-        straight, flush = False, False
-        for card in self.cards:
-            hand_value.append(card.value())
-            hand_suite.append(card.suite())
-        self.update_pair_count_and_hand_value(hand_value, pair_counts)
+        hand_value, hand_suite, pair_counts = self._hand_stats()
+        straight, flush = None, None
 
         # Two pair
         if has_two_pair(pair_counts):
