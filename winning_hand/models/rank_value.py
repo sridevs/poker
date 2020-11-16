@@ -2,6 +2,7 @@ from enum import IntEnum
 
 
 class RankValue(IntEnum):
+    pair_multiplier = 100
     double = 1500
     wheel = 16000
     straight = 17000

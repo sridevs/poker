@@ -6,8 +6,6 @@ class Hand:
 
     def __init__(self, cards):
         self.cards = cards
-        self.straight = False
-        self.flush = False
 
     def __repr__(self):
         return f'{self.cards}'
@@ -25,12 +23,13 @@ class Hand:
             pair_count = hand_value.count(card_value) / 2
             if pair_count >= 1:
                 pair_counts.append(pair_count)
-                pair_value.insert(0, 100 ** pair_count * card_value)
+                pair_value.insert(0, RankValue.pair_multiplier ** pair_count * card_value)
         hand_value.extend(pair_value)
         hand_value.sort(reverse=True)
 
     def value(self):
         hand_value, hand_suite, pair_counts = [], [], []
+        straight, flush = False, False
         for card in self.cards:
             hand_value.append(card.value())
             hand_suite.append(card.suite())
@@ -45,21 +44,21 @@ class Hand:
 
         # Straight
         elif is_straight(hand_value):
-            self.straight = True
+            straight = True
             hand_value.insert(0, RankValue.straight)
 
         # Wheel
         elif is_wheel(hand_value):
-            self.straight = True
+            straight = True
             hand_value.insert(0, RankValue.wheel)
 
         # Flush
         if is_flush(hand_suite):
-            self.flush = True
+            flush = True
             hand_value.insert(0, RankValue.flush)
 
         # Straight Flush
-        if self.straight and self.flush:
+        if straight and flush:
             hand_value.insert(0, RankValue.straight_flush)
 
         return sorted(hand_value, reverse=True)
